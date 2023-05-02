@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vídeo Player</title>
+    <link rel="stylesheet" href="main.css">
+    <!-- fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="gabigol">
+        <img src="img/André CPX Tá (1)_low.png" alt="">
+    </div>
+    <div class="player">
+        <video>
+            <!-- https://gist.github.com/jsturgis/3b19447b304616f18657 -->
+            <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4"
+                type="video/mp4">
+        </video>
+        <div class="player_controller">
+            <div class="barra_rolagem">
+                <div class="boll video"></div>
+                <div class="progresso video"></div>
+            </div>
+
+            <div class="botton_controller">
+                <div class="d_play">
+                    <button id="play-pause" class="playpause">
+                        <img src="https://cdn.discordapp.com/attachments/977933870467018792/1102600588233019502/play-button-arrowhead.png"
+                            width="20px">
+                    </button>
+
+                    <h4 class="timer">00:00</h4>
+                </div>
+
+                <div class="d_volume">
+                    <img src="https://cdn.discordapp.com/attachments/977933870467018792/1102602255426912296/medium-volume.png"
+                        width="25px">
+                    <div class="barra_volume">
+                        <div class="progresso progvolume"></div>
+                        <div class="boll volume"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const playpause = document.getElementById("play-pause");
+            const video = document.querySelector("video");
+            const timer = document.querySelector(".timer");
+            const playerController = document.querySelector('.player_controller');
+            let timeoutId;
+            const barra_rolagem = document.querySelector(".barra_rolagem");
+
+
+            function hidePlayerController() {
+                playerController.style.display = 'none';
+                document.body.style.cursor = "none";
+            }
+
+            function showPlayerController() {
+                playerController.style.display = 'block';
+                document.body.style.cursor = "auto";
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(hidePlayerController, 3000);
+            }
+
+            video.addEventListener('mousemove', showPlayerController);
+
+            document.addEventListener('keydown', function (event) {
+                if (event.code === 'Space') {
+                    showPlayerController();
+                }
+            });
+
+            playpause.addEventListener("click", function () {
+                if (video.paused) {
+                    video.play();
+                    playpause.querySelector("img").src = "https://cdn.discordapp.com/attachments/977933870467018792/1102600588497276948/pause.png"
+                } else {
+                    video.pause();
+                    playpause.querySelector("img").src = "https://cdn.discordapp.com/attachments/977933870467018792/1102600588233019502/play-button-arrowhead.png"
+                }
+            });
+
+            video.addEventListener("click", function () {
+                if (video.paused) {
+                    video.play();
+                    playpause.querySelector("img").src = "https://cdn.discordapp.com/attachments/977933870467018792/1102600588497276948/pause.png"
+                } else {
+                    video.pause();
+                    playpause.querySelector("img").src = "https://cdn.discordapp.com/attachments/977933870467018792/1102600588233019502/play-button-arrowhead.png"
+                }
+            });
+
+            document.addEventListener("keydown", function (event) {
+                if (event.code === "Space") {
+                    if (video.paused) {
+                        video.play();
+                        playpause.querySelector("img").src = "https://cdn.discordapp.com/attachments/977933870467018792/1102600588497276948/pause.png";
+                    } else {
+                        video.pause();
+                        playpause.querySelector("img").src = "https://cdn.discordapp.com/attachments/977933870467018792/1102600588233019502/play-button-arrowhead.png";
+                    }
+                }
+            });
+
+            video.addEventListener("timeupdate", () => {
+                const minutos = Math.floor(video.currentTime / 60);
+                const segundos = Math.floor(video.currentTime % 60);
+                const min = String(minutos).padStart(2, '0');
+                const seg = String(segundos).padStart(2, '0');
+                const timeString = `${min}:${seg}`;
+                timer.innerText = timeString;
+
+                const boll_video = document.querySelector(".boll.video")
+                const barra_video = document.querySelector(".progresso.video")
+                const percent = (video.currentTime / video.duration) * 100
+
+                boll_video.style.left = percent + "%";
+                barra_video.style.width = percent + "%";
+            })
+
+            barra_rolagem.addEventListener('click', function (e) {
+                const barra_pos = this.getBoundingClientRect();
+                const click_pos = e.clientX - barra_pos.left;
+                const percent = click_pos / this.offsetWidth;
+                video.currentTime = percent * video.duration;
+            });
+
+            const barra_volume = document.querySelector(".barra_volume");
+            const boll_volume = document.querySelector(".boll.volume");
+
+            barra_volume.addEventListener("click", function (e) {
+                const barra_pos = this.getBoundingClientRect();
+                const click_pos = e.clientX - barra_pos.left;
+                const percent = click_pos / this.offsetWidth;
+                const boll_volume = document.querySelector(".volume")
+                const barra_volume = document.querySelector(".progvolume")
+
+                video.volume = percent;
+                boll_volume.style.left = percent * 100 + "%";
+                barra_volume.style.width = percent * 100 + "%";
+                console.log(percent)
+            });
+
+            document.addEventListener('keydown', (event) => {
+                switch (event.keyCode) {
+                    case 37: // seta da esquerda
+                        video.currentTime -= 5;
+                        break;
+                    case 39: // seta da direita
+                        video.currentTime += 5;
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            const boll_video = document.querySelector('.boll.video');
+            const barra_video = document.querySelector(".progresso.video")
+            let seguindo_mouse = false;
+
+            barra_rolagem.addEventListener('mousedown', function (e) {
+                seguindo_mouse = true;
+                const barra_pos = this.getBoundingClientRect();
+                const click_pos = e.clientX - barra_pos.left;
+                const percent = click_pos / this.offsetWidth;
+                boll_video.style.left = percent * 100 + '%';
+                barra_video.style.width = percent * 100 + "%";
+                video.currentTime = percent * video.duration;
+            });
+
+            document.addEventListener('mousemove', function (e) {
+                if (seguindo_mouse) {
+                    const barra_pos = barra_rolagem.getBoundingClientRect();
+                    const click_pos = e.clientX - barra_pos.left;
+                    const percent = click_pos / barra_rolagem.offsetWidth;
+                    boll_video.style.left = percent * 100 + '%';
+                    barra_video.style.width = percent * 100 + "%";
+                    video.currentTime = percent * video.duration;
+                }
+            });
+
+            const progvolume = document.querySelector(".progvolume")
+
+            document.addEventListener('mouseup', function (e) {
+                seguindo_mouse = false;
+            });
+        </script>
+
+    </div>
+</body>
+
+</html>

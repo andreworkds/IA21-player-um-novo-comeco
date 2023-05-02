@@ -1,0 +1,129 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Bruno Ace SC', cursive;
+    user-select: none;
+    outline: none;
+
+}
+
+html,
+body {
+    display: flex;
+    height: 100dvh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(255, 0, 0, 1) 100%);
+}
+
+button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0;
+}
+
+video {
+    width: 50vw;
+    box-shadow: 0 0 50px 0px #000000;
+}
+
+.player_controller {
+    background: linear-gradient(to top, #000000cc, #ff000000);
+    width: 100%;
+    padding: 15px 30px;
+    display: block;
+    position: absolute;
+    bottom: 0;
+}
+
+.barra_rolagem {
+    background: #ffffff6e;
+    margin-bottom: 10px;
+    height: 7px;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.boll {
+    width: 15px;
+    height: 15px;
+    background-color: #ff0000;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.boll .video {
+    left: 0%;
+}
+
+.volume {
+    left: 100%;
+}
+
+.progresso {
+    position: absolute;
+    height: 7px;
+    background: #ff0000;
+    border-radius: 10px;
+    width: 0%;
+    pointer-events: none;
+}
+
+.progvolume {
+    width: 100%;
+}
+
+.d_play {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+#play-pause {
+    background: transparent;
+    border: none;
+    margin-right: 10px;
+}
+
+.botton_controller {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.d_volume {
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.barra_volume {
+    background: #ffffff6e;
+    width: 70%;
+    height: 7px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.gabigol {
+    height: 30dvh;
+}
